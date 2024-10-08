@@ -8,29 +8,32 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.getElementById("root");
+    let counter = 0;
+
+    function App() {
+      const [counter, setCounter] = React.useState(0);
+      const onClick = () => {
+        setCounter(counter + 1);
+      };
+      const state = React.useState();
+      console.log(state);
+      console.log("rendered");
+      console.log(counter);
+      return (
+        <div>
+          <h3>Total clicks: {counter}</h3>
+          <button onClick={onClick}>Click me</button>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
+
     //using jsx
     // const Title = () => (
     //   <h3 id='title' onMouseEnter={() => console.log("mouse enter")}>
     //     Hello I'm a title
     //   </h3>
     // );
-
-    // funtion
-    function Title() {
-      return (
-        <h3 id='title' onMouseEnter={() => console.log("mouse enter")}>
-          Hello I'm a title
-        </h3>
-      );
-    }
-
-    //using jsx
-    const Button = () => (
-      <button style={{ backgroundColor: "tomato" }} onClick={() => console.log("im clicked")}>
-        Click me
-      </button>
-    );
-
     // old way
     // const h3 = React.createElement(
     //   "h3",
@@ -56,12 +59,5 @@
     // );
     // old way
     // const container = React.createElement("div", null, [Title, Button]);
-    const Container = () => (
-      <div>
-        <Title />
-        <Button />
-      </div>
-    );
-    ReactDOM.render(<Container />, root);
   </script>
 </html>
