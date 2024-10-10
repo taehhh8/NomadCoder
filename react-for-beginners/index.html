@@ -3,61 +3,52 @@
   <body>
     <div id="root"></div>
   </body>
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    const root = document.getElementById("root");
-    let counter = 0;
+    function Btn({ text, changeValue, fontSize }) {
+      console.log(text, "was render");
+      return (
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            margin: "5px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: fontSize,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
+    Btn.propTypes = {
+      text: PropTypes.string,
+      fontSize: PropTypes.number,
+    };
+
+    const MemoizedBtn = React.memo(Btn);
 
     function App() {
-      const [counter, setCounter] = React.useState(0);
-      const onClick = () => {
-        setCounter(counter + 1);
+      const [value, setValue] = React.useState("Save Changes");
+
+      const changeValue = () => {
+        setValue("Revert Changes");
       };
-      const state = React.useState();
-      console.log(state);
-      console.log("rendered");
-      console.log(counter);
       return (
         <div>
-          <h3>Total clicks: {counter}</h3>
-          <button onClick={onClick}>Click me</button>
+          <MemoizedBtn text={value} changeValue={changeValue} fontSize={16} />
+          <MemoizedBtn text='Continue' fontSize={18} />
         </div>
       );
     }
+
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
-
-    //using jsx
-    // const Title = () => (
-    //   <h3 id='title' onMouseEnter={() => console.log("mouse enter")}>
-    //     Hello I'm a title
-    //   </h3>
-    // );
-    // old way
-    // const h3 = React.createElement(
-    //   "h3",
-    //   {
-    //     id: "title",
-    //     onMouseEnter: () => console.log("mouse enter"),
-    //   },
-    //   "Hello I'm a title"
-    // );
-    // const span = React.createElement("span", { id: "sexy-span", style: { color: "red" } }, "Hello I'm a span");
-
-    //old way
-    // const btn = React.createElement(
-    //   "button",
-    //   {
-    //     onClick: () => console.log("im clicked"),
-    //     style: {
-    //       backgroundColor: "tomato",
-    //     },
-    //   },
-
-    //   "Click me"
-    // );
-    // old way
-    // const container = React.createElement("div", null, [Title, Button]);
   </script>
 </html>
