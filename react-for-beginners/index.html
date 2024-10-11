@@ -7,25 +7,108 @@
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    const root = document.getElementById("root");
-    let counter = 0;
-
     function App() {
-      const [counter, setCounter] = React.useState(0);
-      const onClick = () => {
-        setCounter(counter + 1);
-      };
-      const state = React.useState();
-      console.log(state);
-      console.log("rendered");
-      console.log(counter);
-      return (
-        <div>
-          <h3>Total clicks: {counter}</h3>
-          <button onClick={onClick}>Click me</button>
-        </div>
-      );
+      const styles = {
+      container: {
+        maxWidth: '300px',
+        margin: '0 auto',
+        padding: '20px',
+        boxShadow: '0 0 10px rgba(0,0,0,0.1)',
+        borderRadius: '5px',
+      },
+      input: {
+        width: '93%',
+        padding: '10px',
+        margin: '10px 0',
+        borderRadius: '3px',
+        border: '1px solid #ddd',
+      },
+      select: {
+        width: '100%',
+        padding: '10px',
+        margin: '10px 0',
+        borderRadius: '3px',
+        border: '1px solid #ddd',
+      },
+      result: {
+        backgroundColor: '#f0f0f0',
+        padding: '10px',
+        borderRadius: '3px',
+        marginTop: '20px',
+      },
+       button: {
+        width: '100%',
+        padding: '10px',
+        margin: '10px 0',
+        backgroundColor: "skyblue",
+        color: 'white',
+        border: 'none',
+        borderRadius: '3px',
+        cursor: 'pointer',
+      }
+
+    };
+
+    const [num1, setNum1] = React.useState('');
+    const [num2, setNum2] = React.useState('');
+    const [operation, setOperation] = React.useState('+');
+    const [result, setResult] = React.useState('');
+
+    const calculateResult = () => {
+      const n1 = parseFloat(num1);
+      const n2 = parseFloat(num2);
+      switch(operation) {
+        case '+':
+          setResult(n1 + n2);
+          break;
+        case '-':
+          setResult(n1 - n2);
+          break;
+        case '*':
+          setResult(n1 * n2);
+          break;
+        case '/':
+          setResult(n1 / n2);
+          break;
+        default:
+          setResult('Invalid operation');
+      }
+    };
+
+    const handleChange = (setter) => (event) => {
+      setter(event.target.value);
+    };
+
+
+    return (
+      <div style={styles.container}>
+        <h1 style={{textAlign: 'center', color: '#333'}}>💥 Calculator 💥</h1>
+        <input
+          style={styles.input}
+          value={num1}
+          placeholder="Write a number..."
+          type="number"
+          onChange={handleChange(setNum1)}
+        />
+        <input
+          style={styles.input}
+          value={num2}
+          placeholder="And another one..."
+          type="number"
+          onChange={handleChange(setNum2)}
+        />
+        <select style={styles.select} value={operation} onChange={handleChange(setOperation)}>
+          <option value="+">+</option>
+          <option value="-">-</option>
+          <option value="*">*</option>
+          <option value="/">/</option>
+        </select>
+        <button style={styles.button} onClick={calculateResult}>Calculate</button>
+        <h4 style={styles.result}>The Result is : {result}</h4>
+      </div>
+    );
     }
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
 
     //using jsx
