@@ -1,39 +1,86 @@
-import { useEffect, useState } from "react";
-
-function Hello() {
-  function byFn() {
-    console.log("bye :(");
-  }
-  function hiFn() {
-    console.log("created :)");
-    return byFn();
-  }
-
-  useEffect(() => {
-    console.log("hi :)");
-    return () => console.log("bye :(");
-  }, []);
-  useEffect(function () {
-    console.log("hi :)");
-    return () => console.log("bye :(");
-  }, []);
-  // useEffect(() => {
-  //   console.log("created :)");
-  //   return () => console.log("destroyed :("); // Clean up function 컴포넌트가 없어지거나 사라질때 console에 무언갈 보여주는 함수
-  // }, []);
-  return <h1>Hello</h1>;
-}
+import {  useEffect, useState } from "react";
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+    const [loading, setLoading] = useState(true);
+    const [coins, setCoins] = useState([]);
+    const [selectedCoin, setSelectedCoin] = useState("");
+    const [amount, setAmount] = useState("");
+    const [result, setResult] = useState("");
+    const [search, setSearch] = useState("");
 
-  return (
-    <div>
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
-    </div>
-  );
+    useEffect(()=>{
+      fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+      });
+    },[])
+
+    const handleCoinSelect = (event) => {
+        setSelectedCoin(event.target.value);
+        setResult("");
+    };
+
+    const handleAmountChange = (event) => {
+        setAmount(event.target.value);
+        setResult("");
+    };
+
+    const handleSearch = (event) => {
+        setSearch(event.target.value.toLowerCase());
+    };
+
+    const calculateCoins = () => {
+        if (selectedCoin && amount) {
+            const selected = coins.find((coin) => coin.id === selectedCoin);
+            if (selected) {
+                const coinCount = amount / selected.quotes.USD.price;
+                setResult(`You can buy ${coinCount.toFixed(6)} ${selected.symbol}`);
+            }
+        }
+    };
+
+    const filteredCoins = coins.filter((coin) =>
+        coin.name.toLowerCase().includes(search) ||
+        coin.symbol.toLowerCase().includes(search)
+    );
+
+    return (
+        <div>
+            <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+            {loading ? (
+                <strong>Loading...</strong>
+            ) : (
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Search coins..."
+                        value={search}
+                        onChange={handleSearch}
+                    />
+                    <br />
+                    <select onChange={handleCoinSelect} value={selectedCoin}>
+                        <option value="">Select a coin</option>
+                        {filteredCoins.map((coin) => (
+                            <option key={coin.id} value={coin.id}>
+                                {coin.name} ({coin.symbol}): ${coin.quotes.USD.price} USD
+                            </option>
+                        ))}
+                    </select>
+                    <br />
+                    <input
+                        type="number"
+                        value={amount}
+                        onChange={handleAmountChange}
+                        placeholder="Enter USD amount"
+                    />
+                    <button onClick={calculateCoins}>Calculate</button>
+                    <p>{result}</p>
+                </div>
+            )}
+        </div>
+    );
 }
 
 export default App;
