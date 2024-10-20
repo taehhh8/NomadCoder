@@ -1,0 +1,65 @@
+.homeContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.loading {
+  text-align: center;
+  font-size: 24px;
+  color: #e62429;
+  margin-top: 50px;
+}
+
+.characterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
+}
+
+.characterCard {
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.characterCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.characterImage {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.characterTitle {
+  padding: 15px;
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+  background-color: #e62429;
+  color: white;
+}
+
+.characterLink {
+  text-decoration: none;
+  color: white;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.characterLink:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .characterGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

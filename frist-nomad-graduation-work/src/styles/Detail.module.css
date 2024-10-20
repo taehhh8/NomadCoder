@@ -1,0 +1,63 @@
+.detailContainer {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.loading {
+    text-align: center;
+    font-size: 24px;
+    color: #e62429;
+}
+
+.characterCard {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.characterImage {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.characterInfo {
+    padding: 20px;
+}
+
+.characterName {
+    font-size: 32px;
+    color: #e62429;
+    margin-bottom: 10px;
+}
+
+.characterDescription {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.characterModified {
+    font-size: 14px;
+    color: #666;
+}
+
+@media (min-width: 768px) {
+    .characterCard {
+        flex-direction: row;
+    }
+
+    .characterImage {
+        width: 50%;
+        height: auto;
+    }
+
+    .characterInfo {
+        width: 50%;
+    }
+}
