@@ -1,14 +1,13 @@
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./routes/Home";
 import Detail from "./routes/Detail";
+import "./App.css";
 
 function App() {
-
-    return (
-        <Router>
+  return (
+    <Router>
             <Switch>
-                <Route path="/movie/:id">
+                <Route path="/character/:id">
                     <Detail/>
                 </Route>
                 <Route path="/">
@@ -16,8 +15,7 @@ function App() {
                 </Route>
             </Switch>
         </Router>
-          
-    );
+  );
 }
 
 export default App;
