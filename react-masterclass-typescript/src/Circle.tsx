@@ -1,5 +1,7 @@
 // Typing the Props
-
+// defaultProps
+// optionalProps
+// Typescript useState
 import { useState } from "react";
 import styled from "styled-components";
 
