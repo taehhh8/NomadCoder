@@ -1,20 +1,13 @@
-import { useState } from "react";
-import styled from "styled-components";
+import React from 'react';
+import CountryForm from './components/CountryForm';
+import CountryLists from './components/CountryLists';
 
-function App() {
-  const Container = styled.div`
-    background-color: ${(props) => props.theme.bgColor};
-  `;
-
-  const H1 = styled.h1`
-    color: ${(props) => props.theme.textColor};
-  `;
-
+export default function App() {
   return (
-    <Container>
-      <H1>Protected</H1>
-    </Container>
+    <main>
+      <h2>내가 가고싶은 나라들</h2>
+      <CountryForm />
+      <CountryLists />
+    </main>
   );
 }
-
-export default App;
