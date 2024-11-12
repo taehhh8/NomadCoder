@@ -133,3 +133,5 @@ export default function Navigation() {
 //   }
 
 // 이렇게하면 /movies/123123123 입력하면 id가 123123123을 출력한다.
+//<MovieDetail params={{id:"123123123"}}/>
+// 이렇게 하면 컴포넌트에 파라미터를 넘겨줄 수 있다.
