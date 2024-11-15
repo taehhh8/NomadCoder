@@ -1,7 +1,7 @@
 "use client";
 // this component is client interactive
 // this component is hydrated
-
+import styles from "../styles/navigation.module.css";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -13,16 +13,16 @@ export default function Navigation() {
   //   console.log(path);
   //   console.log("hello");
   return (
-    <nav>
-      <ul>
+    <nav className={styles.nav}>
+      <ul className={styles.list}>
         <li>
-          <Link href='/'>Home</Link> {path === "/" ? "🔥" : ""}
+          <Link href="/">Home</Link> {path === "/" ? "🔥" : ""}
         </li>
         <li>
-          <Link href='/about-us'>About</Link> {path === "/about-us" ? "🔥" : ""}
+          <Link href="/about-us">About</Link> {path === "/about-us" ? "🔥" : ""}
         </li>
         <li>
-          <Link href='/contact'>Contact</Link> {path === "/contact" ? "🔥" : ""}
+          <Link href="/contact">Contact</Link> {path === "/contact" ? "🔥" : ""}
         </li>
         <li>
           <button onClick={() => setCount((prev) => prev + 1)}>{count}</button>
@@ -136,6 +136,4 @@ export default function Navigation() {
 //<MovieDetail params={{id:"123123123"}}/>
 // 이렇게 하면 컴포넌트에 파라미터를 넘겨줄 수 있다.
 
-
 // 2024/11/13
-
