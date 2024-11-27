@@ -3,22 +3,55 @@
 import { useFormStatus } from "react-dom";
 import { useActionState, useState } from "react";
 import { FireIcon, UserIcon, LockClosedIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
+import { z } from "zod";
+import FormInput from "@/components/form-input";
+
+// Zod 스키마 정의
+const loginSchema = z.object({
+  email: z.string().email().endsWith("@zod.com", { message: "Only @zod.com emails are allowed" }),
+  username: z.string().min(5, { message: "Username should be at least 5 characters long" }),
+  password: z
+    .string()
+    .min(10, { message: "Password should be at least 10 characters long" })
+    .regex(/[0-9]/, { message: "Password should contain at least one number(123456789)" }),
+});
 
 // 상태 타입 정의
 interface LoginState {
   message: string | null;
   success: boolean;
+  errors?: {
+    email?: string[];
+    username?: string[];
+    password?: string[];
+  };
 }
 
 // 서버 액션 정의
 const loginAction = async (prevState: LoginState, formData: FormData): Promise<LoginState> => {
-  const password = formData.get("password");
+  try {
+    const validatedFields = loginSchema.safeParse({
+      email: formData.get("email"),
+      username: formData.get("username"),
+      password: formData.get("password"),
+    });
 
-  // 비밀번호 검증
-  if (password === "12345") {
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        message: "Validation failed",
+        errors: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+
+    // 검증 성공 후 추가 로직
     return { success: true, message: "Welcome back!" };
+  } catch (error: unknown) {
+    // error를 콘솔에 로깅하거나
+    console.error("Login error:", error);
+
+    return { success: false, message: "An unexpected error occurred" };
   }
-  return { success: false, message: "Invalid credentials" };
 };
 
 // 제출 버튼 컴포넌트
@@ -35,6 +68,7 @@ export default function Login() {
   const [state, formAction] = useActionState(loginAction, {
     message: null,
     success: false,
+    errors: {},
   });
 
   // 폼 입력값을 위한 상태 추가
@@ -65,48 +99,39 @@ export default function Login() {
       </div>
 
       <form action={handleSubmit} className='flex flex-col gap-3'>
-        <div className='flex flex-col gap-6 '>
-          {/* Email Input with Icon */}
-          <div className='relative'>
-            <EnvelopeIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 size-5 text-gray-400' />
-            <input
-              className='bg-transparent rounded-md w-full h-10 focus:outline-none ring-1 focus:ring-2 ring-neutral-200 focus:ring-orange-500 border-none placeholder:text-neutral-400 pl-10'
-              type='email'
-              name='email'
-              placeholder='Email'
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
+        <div className='flex flex-col gap-6'>
+          <FormInput
+            type='email'
+            name='email'
+            placeholder='Email'
+            required={true}
+            value={formData.email}
+            onChange={handleChange}
+            errors={state.errors?.email || []}
+            icon={<EnvelopeIcon />}
+          />
 
-          {/* Username Input with Icon */}
-          <div className='relative'>
-            <UserIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 size-5 text-gray-400' />
-            <input
-              className='bg-transparent rounded-md w-full h-10 focus:outline-none ring-1 focus:ring-2 ring-neutral-200 focus:ring-orange-500 border-none placeholder:text-neutral-400 pl-10'
-              type='text'
-              name='username'
-              placeholder='Username'
-              required
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
+          <FormInput
+            type='text'
+            name='username'
+            placeholder='Username'
+            required={true}
+            value={formData.username}
+            onChange={handleChange}
+            errors={state.errors?.username || []}
+            icon={<UserIcon />}
+          />
 
-          {/* Password Input with Icon */}
-          <div className='relative'>
-            <LockClosedIcon className='absolute left-3 top-1/2 transform -translate-y-1/2 size-5 text-gray-400' />
-            <input
-              className='bg-transparent rounded-md w-full h-10 focus:outline-none ring-1 focus:ring-2 ring-neutral-200 focus:ring-orange-500 border-none placeholder:text-neutral-400 pl-10'
-              type='password'
-              name='password'
-              placeholder='Password'
-              required
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
+          <FormInput
+            type='password'
+            name='password'
+            placeholder='Password'
+            required={true}
+            value={formData.password}
+            onChange={handleChange}
+            errors={state.errors?.password || []}
+            icon={<LockClosedIcon />}
+          />
         </div>
 
         <SubmitButton />
