@@ -1,8 +1,8 @@
-import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/db";
 import TweetList from "@/components/tweet-list";
 import Pagination from "@/components/Pagination";
+import { getSession } from "@/lib/sesstion";
 
 // 한 페이지당 표시할 트윗 수
 const TWEETS_PER_PAGE = 10;
