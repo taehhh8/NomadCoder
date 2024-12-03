@@ -1,43 +1,27 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
 model User {
-  id         Int      @id @default(autoincrement()) //  첫번째 사용자를 생성할떄 id : 1
-  username   String   @unique
-  email      String?  @unique //이메일은 필수가 아니다
-  password   String? //SNS 로그인할수도 잇다.
-  bio        String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  Tweets     Tweet[]
-  Likes      Like[]
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tweets    Tweet[] // User와 Tweet의 관계 설정
 }
 
 model Tweet {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
-  Likes      Like[]
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int // 외래 키
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-
-model Like {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
-  tweet      Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
-  tweetId    Int
-}
-
-// user ----------------> phone# --------> sms(token)
-
-// token -----> SMSToken - User -> log user in
