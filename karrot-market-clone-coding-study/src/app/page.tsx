@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import TweetList from "@/components/tweet-list";
 import Pagination from "@/components/Pagination";
 import { getSession } from "@/lib/sesstion";
+import AddTweet from "@/components/AddTweet";
 
 // 한 페이지당 표시할 트윗 수
 const TWEETS_PER_PAGE = 10;
@@ -39,6 +40,7 @@ export default async function HomePage({ searchParams }: { searchParams: { page?
   return (
     <div className='max-w-2xl mx-auto p-4'>
       <h1 className='text-2xl font-bold mb-8'>Home</h1>
+      <AddTweet />
       <TweetList tweets={tweets} />
       <Pagination currentPage={currentPage} totalPages={totalPages} />
     </div>
