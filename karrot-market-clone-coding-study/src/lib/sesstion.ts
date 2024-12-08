@@ -24,7 +24,6 @@ const sessionOptions = {
 
 // 세션 가져오기 함수
 export async function getSession() {
-  // cookies()를 Request 객체로 변환
   const request = new Request("http://localhost", {
     headers: {
       cookie: cookies().toString(),
@@ -35,7 +34,6 @@ export async function getSession() {
 
   const session = await getIronSession(request, response, sessionOptions);
 
-  // 세션이 없는 경우 기본값 설정
   if (!session.isLoggedIn) {
     session.isLoggedIn = false;
   }
